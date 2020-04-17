@@ -1,0 +1,373 @@
+# Blender MTL File: 'livingroom.blend'
+# Material Count: 34
+
+newmtl Cactus
+Ns 380.250042
+Ka 1.000000 1.000000 1.000000
+Kd 0.114641 0.321323 0.109725
+Ks 0.341667 0.341667 0.341667
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Carpet
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 2.000000 textures/TexturesCom_Fabric_Carpet_1K_normal.png
+map_Ns textures/TexturesCom_Fabric_Carpet_1K_roughness.png
+
+newmtl Ceramic_Green
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.127229 0.023940 0.023940
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Ceramic_Pink
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.887923 0.211029 0.122550
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Ceramic_White
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.887923 0.887923 0.887923
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Ceramic_Yellow
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.873047 0.887923 0.122546
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Dark_Plastic
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Plastic_Polymer_1K_normal.png
+map_Kd textures/TexturesCom_Plastic_Polymer_1K_albedo.png
+map_Ns textures/TexturesCom_Plastic_Polymer_1K_roughness.png
+
+newmtl Dirt
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.076568 0.028816 0.008927
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Door
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 0.400000 textures/TexturesCom_Wood_Aged_1K_normal.png
+map_Kd textures/TexturesCom_Wood_Aged_1K_albedo.png
+map_Ns textures/TexturesCom_Wood_Aged_1K_roughness.png
+
+newmtl Floor
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/TexturesCom_Wood_CompositeDecking_1K_albedo.png
+map_Ns textures/TexturesCom_Wood_CompositeDecking_1K_roughness.png
+
+newmtl Fred_Li
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ..\\..\\..\\modeling\\Li_Frederick-Copy.jpg
+
+newmtl Fred_Li_Baby
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ..\\..\\..\\modeling\\Li_Frederick-Baby.jpg
+
+newmtl Fred_Li_Wife
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ..\\..\\..\\modeling\\Li_Frederick-Wife.jpg
+
+newmtl Glass
+Ns 900.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Gold
+Ns 105.062520
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.530387 0.091078
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Green_Leather
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Leather_Plain_1K_normal.png
+map_Ns textures/TexturesCom_Leather_Plain_1K_roughness.png
+
+newmtl Leather
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Leather_Plain_1K_normal.png
+map_Kd textures/TexturesCom_Leather_Plain_1K_albedo.png
+map_Ns textures/TexturesCom_Leather_Plain_1K_roughness.png
+
+newmtl Marble
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Marble_SlabWhite_1K_normal.png
+map_Kd textures/TexturesCom_Marble_SlabWhite_1K_albedo.png
+map_Ns textures/TexturesCom_Marble_SlabWhite_1K_roughness.png
+
+newmtl Material.003
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.320082 0.150210
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.004
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.009886 0.004021 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.005
+Ns 22.562508
+Ka 1.000000 1.000000 1.000000
+Kd 0.012735 0.137584 0.015293
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Metal
+Ns 342.249976
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl None
+Ns 500
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl Oak
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Wood_OakVeneer2_1K_normal.png
+map_Kd textures/TexturesCom_Wood_OakVeneer2_1K_albedo.png
+map_Ns textures/TexturesCom_Wood_OakVeneer2_1K_roughness.png
+
+newmtl Paint
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Paint_Hammerite_1K_normal.png
+map_Kd textures/TexturesCom_Paint_Hammerite_1K_albedo.png
+map_Ns textures/TexturesCom_Paint_Hammerite_1K_roughness.png
+
+newmtl Painting
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Paper
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Screen
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Silver
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Sofa_Cotton
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Fabric_Wool4_1K_normal.png
+map_Ns textures/TexturesCom_Fabric_Wool4_1K_roughness.png
+
+newmtl Sofa_Cotton_Coloured
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Fabric_Wool4_1K_normal.png
+map_Ns textures/TexturesCom_Fabric_Wool4_1K_roughness.png
+
+newmtl Spike
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.281008 0.269830 0.006175
+Ks 0.341667 0.341667 0.341667
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl White_Plastic
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump textures/TexturesCom_Paint_Hammerite_1K_normal.png
+map_Ns textures/TexturesCom_Paint_Hammerite_1K_roughness.png
+
+newmtl Wood
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 1.000000 0.219526 0.000000
+Ni 1.450000
+d 1.000000
+illum 2

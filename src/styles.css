@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 100vh;
+
+}
+
+.loadingMessage {
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: relative;
+
+    font-size: 36px;
+    font-family: consolas, serif;
+
+    /*width: 300px;*/
+    /*height: 200px;*/
+
+    margin: auto;
+}
+
+.canvas {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: relative;
+}
