@@ -1,0 +1,460 @@
+# Blender MTL File: 'livingroom.blend'
+# Material Count: 39
+
+newmtl Aged_Wood
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Wood_Aged_1K_normal.tif
+map_Kd TexturesCom_Wood_Aged_1K_albedo.tif
+map_Ns TexturesCom_Wood_Aged_1K_roughness.tif
+
+newmtl Bark
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_TreeBark_1K_normal.tiff
+map_Kd TexturesCom_TreeBark_1K_albedo.tif
+map_Ns TexturesCom_TreeBark_1K_roughness.tif
+
+newmtl Cactus
+Ns 380.250042
+Ka 1.000000 1.000000 1.000000
+Kd 0.114641 0.321323 0.109725
+Ks 0.341667 0.341667 0.341667
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Carpet
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 2.000000 TexturesCom_Fabric_Carpet_1K_normal.tif
+map_Kd TexturesCom_Fabric_Carpet_1K_albedo_striped.tif
+map_Ns TexturesCom_Fabric_Carpet_1K_roughness.tif
+
+newmtl Ceramic_Pink
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.887923 0.211029 0.122550
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Ceramic_White
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.887923 0.887923 0.887923
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Ceramic_Yellow
+Ns 761.760003
+Ka 1.000000 1.000000 1.000000
+Kd 0.873047 0.887923 0.122546
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Colourless_Denim
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 2.000000 TexturesCom_Fabric_Denim_1K_normal.tif
+map_Ns TexturesCom_Fabric_Denim_1K_roughness.tif
+
+newmtl CompositeDecking
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd TexturesCom_Wood_CompositeDecking_1K_albedo.tif
+map_Ns TexturesCom_Wood_CompositeDecking_1K_roughness.tif
+
+newmtl Cream_Paint
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Plaster_Plain_1K_normal.tif
+map_Kd TexturesCom_Plaster_Plain_1K_albedo_cream.tif
+map_Ns TexturesCom_Plaster_Plain_1K_roughness.tif
+
+newmtl Dark_Plastic
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Plastic_Polymer_1K_normal.tif
+map_Kd TexturesCom_Plastic_Polymer_1K_albedo.tif
+map_Ns TexturesCom_Plastic_Polymer_1K_roughness.tif
+
+newmtl Fence
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Wood_PlanksBeamed_1K_normal.tif
+map_Kd TexturesCom_Wood_PlanksBeamed_1K_albedo.tif
+map_Ns TexturesCom_Wood_PlanksBeamed_1K_roughness.tif
+
+newmtl Flame
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd TexturesCom_Flames0031_1_M.png
+map_Ke TexturesCom_Flames0031_1_M.png
+
+newmtl Fred_Li
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Li_Frederick.png
+
+newmtl Fred_Li_Baby
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Li_Frederick-Baby.png
+
+newmtl Fred_Li_Family
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd family.png
+
+newmtl Fred_Li_Wife
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Li_Frederick-Wife.png
+
+newmtl Glass
+Ns 900.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Gold
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Paint_GoldFake_1K_normal.tif
+map_Kd TexturesCom_Paint_GoldFake_1K_albedo.tif
+map_Ns TexturesCom_Paint_GoldFake_1K_roughness.tif
+refl TexturesCom_Paint_GoldFake_1K_metallic.tif
+
+newmtl Green_Leather
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Leather_Plain_1K_normal.tif
+map_Kd TexturesCom_Leather_Plain_1K_albedo_green.tif
+map_Ns TexturesCom_Leather_Plain_1K_roughness.tif
+
+newmtl Leather
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Leather_Plain_1K_normal.tif
+map_Kd TexturesCom_Leather_Plain_1K_albedo.tif
+map_Ns TexturesCom_Leather_Plain_1K_roughness.tif
+
+newmtl Marble
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Marble_SlabWhite_1K_normal.tif
+map_Kd TexturesCom_Marble_SlabWhite_1K_albedo.tif
+map_Ns TexturesCom_Marble_SlabWhite_1K_roughness.tif
+
+newmtl Material.003
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.320082 0.150210
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.004
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.009886 0.004021 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.005
+Ns 22.562508
+Ka 1.000000 1.000000 1.000000
+Kd 0.012735 0.137584 0.015293
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl None
+Ns 500
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl Oak
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Wood_OakVeneer2_1K_normal.tif
+map_Kd TexturesCom_Wood_OakVeneer2_1K_albedo.tif
+map_Ns TexturesCom_Wood_OakVeneer2_1K_roughness.tif
+
+newmtl Painted_Metal
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Metal_TreadplatePainted2_1K_normal.tif
+map_Kd TexturesCom_Metal_TreadplatePainted2_1K_albedo.tif
+map_Ns TexturesCom_Metal_TreadplatePainted2_1K_roughness.tif
+refl TexturesCom_Metal_TreadplatePainted2_1K_metallic.tif
+
+newmtl Painting
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd windows_xp_bliss-wide.png
+map_Ns TexturesCom_Fabric_Wool4_1K_roughness.tif
+
+newmtl Paper
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Path
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Brick_StoneCladding2_1K_normal.tif
+map_Kd TexturesCom_Brick_StoneCladding2_1K_albedo.tif
+map_Ns TexturesCom_Brick_StoneCladding2_1K_roughness.tif
+
+newmtl Screen
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Soil
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Ground_Soil3_3x3_1K_normal.tif
+map_Kd TexturesCom_Ground_Soil3_3x3_1K_albedo.tif
+map_Ns TexturesCom_Ground_Soil3_3x3_1K_roughness.tif
+
+newmtl Spike
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.281008 0.269830 0.006175
+Ks 0.341667 0.341667 0.341667
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Steel
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Metal_SteelScratched_1K_normal.tif
+map_Kd TexturesCom_Metal_SteelScratched_1K_albedo.tif
+map_Ns TexturesCom_Metal_SteelScratched_1K_roughness.tif
+refl TexturesCom_Metal_SteelScratched_1K_metallic.tif
+
+newmtl White_Paint
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Plaster_Plain_1K_normal.tif
+map_Kd TexturesCom_Plaster_Plain_1K_albedo.tif
+map_Ns TexturesCom_Plaster_Plain_1K_roughness.tif
+
+newmtl White_Plastic
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Paint_GoldFake_1K_normal.tif
+map_Kd TexturesCom_Plastic_Polymer_1K_albedo_white.tif
+map_Ns TexturesCom_Paint_GoldFake_1K_roughness.tif
+
+newmtl Wool
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Fabric_Wool4_1K_normal.tif
+map_Kd TexturesCom_Fabric_Wool4_1K_albedo.tif
+map_Ns TexturesCom_Fabric_Wool4_1K_roughness.tif
+
+newmtl World_Map
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd map-world-1450907.jpg

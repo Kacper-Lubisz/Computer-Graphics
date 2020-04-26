@@ -2,7 +2,7 @@ body {
     margin: 0;
 }
 
-.container {
+#container {
     text-align: center;
     overflow: hidden;
     position: absolute;
@@ -16,11 +16,11 @@ body {
 
 }
 
-.loadingMessage {
+#loadingMessage {
 
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     position: relative;
 
     font-size: 36px;
@@ -32,9 +32,11 @@ body {
     margin: auto;
 }
 
-.canvas {
+canvas {
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     position: relative;
+
+    box-shadow: 0 0 10px;
 }
