@@ -6,6 +6,7 @@ import {Material} from "./Material";
 import {SceneObject} from "./SceneObject";
 import {Light} from "./Light";
 import {MeshObject} from "./MeshObject";
+import {fillBuffer, loadCubeMap} from "./glUtils";
 
 
 const zNear = 0.1;
@@ -35,6 +36,7 @@ export class Renderer {
 
         // const skyBoxPromise = loadOBJ(scene);
 
+
         new Promise(async (acc, rej) => {
             try {
                 this.scene = await loadOBJ(this.gl, scene);
@@ -51,23 +53,21 @@ export class Renderer {
                         "uUseAlbedoMap", "uAlbedo", "uAlbedoMap",
                         "uUseRoughnessMap", "uRoughness", "uRoughnessMap",
                         "uUseMetalnessMap", "uMetalness", "uMetalnessMap",
+                        "uLightPositions", "uLightColors",
+                        "uSkyMap"
                     ]
                 );
 
-                // this.skyShader = await loadShaderProgram(
-                //     this.gl,
-                //     "/res/shaders/sky.vert",
-                //     "/res/shaders/sky.frag",
-                //     ["aPosition", "aNormal", "aTexCoord",],
-                //     [
-                //         "uProjectionMatrix", "uModelMatrix", "uViewMatrix",
-                //         "uNormalMap",
-                //         "uAlbedoMap", "uAlbedo", "uUseAlbedoMap",
-                //         "uRoughnessMap", "uRoughness", "uUseRoughnessMap",
-                //         "uMetalness",
-                //         "uCameraPosition"
-                //     ]
-                // );
+                this.skyShader = await loadShaderProgram(
+                    this.gl,
+                    "/res/shaders/sky.vert",
+                    "/res/shaders/sky.frag",
+                    ["aPosition"],
+                    [
+                        "uProjectionMatrix", "uViewMatrix",
+                        "uSkyMap"
+                    ]
+                );
                 onLoaded();
                 this.paint();
 
@@ -80,6 +80,34 @@ export class Renderer {
             alert(`Unrecoverable Error, failed to load scene. ${error}`);
             console.error(error);
         });
+
+        this.skyBoxPositionsBuffer = fillBuffer(this.gl, new Float32Array([ // using gl.TRIANGLES
+            0, 1, 0,
+            0, -1, 0,
+            1, 0, 0,
+            -1, 0, 0,
+            0, 0, 1,
+            0, 0, -1,
+        ]));
+        this.skyBoxIndicesBuffer = fillBuffer(this.gl, new Uint16Array([
+            2, 4, 0,
+            0, 4, 3,
+            3, 5, 0,
+            5, 2, 0,
+            2, 1, 4,
+            1, 2, 5,
+            3, 4, 1,
+            5, 3, 1,
+        ]), this.gl.ELEMENT_ARRAY_BUFFER);
+
+        this.skyBoxCubeMap = loadCubeMap(this.gl, [
+            "/res/textures/sky_map_px.png",
+            "/res/textures/sky_map_nx.png",
+            "/res/textures/sky_map_py.png",
+            "/res/textures/sky_map_ny.png",
+            "/res/textures/sky_map_pz.png",
+            "/res/textures/sky_map_nz.png",
+        ]);
 
     }
 
@@ -113,10 +141,14 @@ export class Renderer {
 
         this.gl.uniform3fv(this.pbrShader.uniformLocations["uCameraPosition"], this.camera.location);
 
-        this.gl.uniform1i(this.pbrShader.uniformLocations["uAlbedoMap"], 0);
-        this.gl.uniform1i(this.pbrShader.uniformLocations["uNormalMap"], 1);
-        this.gl.uniform1i(this.pbrShader.uniformLocations["uRoughnessMap"], 2);
-        this.gl.uniform1i(this.pbrShader.uniformLocations["uMetalnessMap"], 2);
+        this.gl.uniform1i(this.pbrShader.uniformLocations["uSkyMap"], 0);
+        this.gl.uniform1i(this.pbrShader.uniformLocations["uAlbedoMap"], 1);
+        this.gl.uniform1i(this.pbrShader.uniformLocations["uNormalMap"], 2);
+        this.gl.uniform1i(this.pbrShader.uniformLocations["uRoughnessMap"], 3);
+        this.gl.uniform1i(this.pbrShader.uniformLocations["uMetalnessMap"], 4);
+
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.skyBoxCubeMap);
 
         const unwrappedSceneGraph = this.scene.rootObject.unwrapChildren(); // pre order traversal
         const transformationMap = new Map();
@@ -172,23 +204,26 @@ export class Renderer {
                     // uMetalness
                     // uMetalnessMap
 
-                    this.gl.uniform1f(this.pbrShader.uniformLocations["metalness"], material.metalness ? material.metalness : 0);
-                    this.gl.uniform3fv(this.pbrShader.uniformLocations["albedo"], material.albedo ? material.albedo : [1, 1, 1]);
-                    this.gl.uniform1i(this.pbrShader.uniformLocations["useAlbedoMap"], material.albedoMap ? 1 : 0);
+                    this.gl.uniform3fv(this.pbrShader.uniformLocations["uAlbedo"], material.albedo ? material.albedo : [1, 1, 1]);
+                    this.gl.uniform1i(this.pbrShader.uniformLocations["uUseAlbedoMap"], material.albedoMap ? 1 : 0);
+
                     this.gl.uniform1f(this.pbrShader.uniformLocations["roughness"], material.roughness ? material.roughness : 0.8);
                     this.gl.uniform1i(this.pbrShader.uniformLocations["useRoughnessMap"], material.roughnessMap ? 1 : 0);
 
-                    this.gl.activeTexture(this.gl.TEXTURE0);
-                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.albedoMap ? material.albedoMap : null);
+                    this.gl.uniform1f(this.pbrShader.uniformLocations["uMetalness"], material.metalness ? material.metalness : 0);
+                    this.gl.uniform1i(this.pbrShader.uniformLocations["uUseMetalnessMap"], material.albedoMap ? 1 : 0);
 
                     this.gl.activeTexture(this.gl.TEXTURE1);
-                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.normalMap ? material.normalMap : null);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.albedoMap ?? null);
 
                     this.gl.activeTexture(this.gl.TEXTURE2);
-                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.roughnessMap ? material.roughnessMap : null);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.normalMap ?? null);
 
                     this.gl.activeTexture(this.gl.TEXTURE3);
-                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.metalnessMap ? material.metalnessMap : null);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.roughnessMap ?? null);
+
+                    this.gl.activeTexture(this.gl.TEXTURE4);
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, material.metalnessMap ?? null);
 
                     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, faces.indexBuffer);
 
@@ -201,6 +236,34 @@ export class Renderer {
                 }
             }
         }
+
+        // draw sky
+
+        this.gl.depthFunc(this.gl.LEQUAL);
+        this.gl.useProgram(this.skyShader.shaderProgram);
+
+        this.gl.uniformMatrix4fv(this.skyShader.uniformLocations["uProjectionMatrix"], false, this.projectionMatrix);
+        this.gl.uniformMatrix4fv(this.skyShader.uniformLocations["uViewMatrix"], false, this.viewMatrix);
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.skyBoxPositionsBuffer);
+        this.gl.vertexAttribPointer(this.skyShader.attributeLocations["aPosition"], 3, this.gl.FLOAT, false, 0, 0);
+        this.gl.enableVertexAttribArray(this.skyShader.attributeLocations["aPosition"]);
+
+        this.gl.uniform1i(this.skyShader.uniformLocations["uSkyMap"], 0);
+
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.skyBoxCubeMap);
+
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.skyBoxIndicesBuffer);
+        this.gl.drawElements(
+            this.gl.TRIANGLES,
+            24,
+            this.gl.UNSIGNED_SHORT,
+            0
+        );
+
+        this.gl.depthFunc(this.gl.LESS);
+
 
         window.requestAnimationFrame(this.paint.bind(this));
 
@@ -267,7 +330,8 @@ async function loadOBJ(gl, file) {
 
         } else if (line.startsWith("vt ")) {
 
-            currentObject.texCoords.push(line.substr(3).split(" ").map(num => Number(num)));
+            const [x, y] = line.substr(3).split(" ").map(num => Number(num));
+            currentObject.texCoords.push([x, 1 - y]);
             texCoordsIndex++;
 
         } else if (line.startsWith("vn ")) {

@@ -1,5 +1,5 @@
-# Blender MTL File: 'livingroom.blend'
-# Material Count: 39
+# Blender MTL File: 'livingroom_origins.blend'
+# Material Count: 42
 
 newmtl Aged_Wood
 Ns 225.000000
@@ -26,6 +26,16 @@ illum 2
 map_Bump TexturesCom_TreeBark_1K_normal.tiff
 map_Kd TexturesCom_TreeBark_1K_albedo.tif
 map_Ns TexturesCom_TreeBark_1K_roughness.tif
+
+newmtl Black
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
 
 newmtl Cactus
 Ns 380.250042
@@ -92,7 +102,7 @@ illum 2
 map_Bump -bm 2.000000 TexturesCom_Fabric_Denim_1K_normal.tif
 map_Ns TexturesCom_Fabric_Denim_1K_roughness.tif
 
-newmtl CompositeDecking
+newmtl Composite_Decking
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -222,6 +232,19 @@ map_Bump TexturesCom_Paint_GoldFake_1K_normal.tif
 map_Kd TexturesCom_Paint_GoldFake_1K_albedo.tif
 map_Ns TexturesCom_Paint_GoldFake_1K_roughness.tif
 refl TexturesCom_Paint_GoldFake_1K_metallic.tif
+
+newmtl Grass
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Nature_Moss_1K_normal.tif
+map_Kd TexturesCom_Nature_Moss_1K_albedo.tif
+map_Ns TexturesCom_Nature_Moss_1K_roughness.tif
 
 newmtl Green_Leather
 Ns 225.000000
@@ -361,6 +384,19 @@ illum 2
 map_Bump TexturesCom_Brick_StoneCladding2_1K_normal.tif
 map_Kd TexturesCom_Brick_StoneCladding2_1K_albedo.tif
 map_Ns TexturesCom_Brick_StoneCladding2_1K_roughness.tif
+
+newmtl Rough_Wood
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump TexturesCom_Wood_Rough_1K_normal.tif
+map_Kd TexturesCom_Wood_Rough_1K_albedo.tif
+map_Ns TexturesCom_Wood_OakVeneer2_1K_roughness.tif
 
 newmtl Screen
 Ns 225.000000

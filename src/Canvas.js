@@ -8,6 +8,10 @@ export class Canvas {
         this.canvas.setAttribute("width", width);
         this.canvas.setAttribute("height", height);
 
+        this.canvas.addEventListener("click", () => {
+            this.canvas.requestPointerLock();
+        });
+
         this.glContext = this.canvas.getContext("webgl");
 
         this.loadingMessage = document.querySelector("#loadingMessage");

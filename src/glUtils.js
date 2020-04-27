@@ -1,65 +1,143 @@
-export function loadTexture(gl, url) {
+import UTIF from "utif";
 
-    function isPowerOfTwo(value) {
-        return (value & (value - 1)) === 0;
-    }
+/**
+ *
+ * @param gl {WebGLRenderingContext}
+ * @param texture {WebGLTexture}
+ * @param data
+ * @param width {number} the width of the image
+ * @param height {number} the height of the image
+ */
+function replaceTexture(gl, texture, data, width, height,) {
 
-    const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
 
-    const level = 0;
-    const internalFormat = gl.RGBA;
-    const width = 2;
-    const height = 2;
-    const border = 0;
-    const srcFormat = gl.RGBA;
-    const srcType = gl.UNSIGNED_BYTE;
-    const pixel = new Uint8Array([
-        100, 100, 100, 255,
-        150, 150, 150, 255,
-        100, 100, 100, 255,
-        150, 150, 150, 255
-    ]);
-    gl.texImage2D(
-        gl.TEXTURE_2D,
-        level,
-        internalFormat,
-        width, height,
-        border,
-        srcFormat,
-        srcType,
-        pixel
-    );
-
-    const image = new Image();
-    image.onload = () => {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
+    if (data instanceof Uint8Array) {
         gl.texImage2D(
             gl.TEXTURE_2D,
-            level,
-            internalFormat,
-            srcFormat,
-            srcType,
-            image
+            0,
+            gl.RGBA,
+            width,
+            height,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            data
         );
 
-        console.log(`loaded image -> ${url} ${image}`);
+    } else {
+        gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            data
+        );
+    }
 
-        // WebGL1 has different requirements for power of 2 images
-        // vs non power of 2 images so check if the image is a
-        // power of 2 in both dimensions.
-        if (isPowerOfTwo(image.width) && isPowerOfTwo(image.height)) {
-            // Yes, it's a power of 2. Generate mips.
-            gl.generateMipmap(gl.TEXTURE_2D);
-        } else {
-            // No, it's not a power of 2. Turn off mips and set
-            // wrapping to clamp to edge
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+}
+
+
+export function loadCubeMap(gl, urls) {
+
+    const texture = gl.createTexture();
+
+    for (let i = 0; i < 6; i++) {
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
+        gl.texImage2D(
+            gl.TEXTURE_CUBE_MAP_POSITIVE_X + i,
+            0,
+            gl.RGBA,
+            2,
+            2,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            new Uint8Array([
+                255, 255, 0, 255,
+                0, 0, 0, 255,
+                0, 0, 0, 255,
+                255, 255, 0, 255,
+            ])
+        );
+        gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+    }
+
+    Promise.all(Array(6).fill(0).map((_, i) => {
+        const image = new Image();
+        image.src = urls[i];
+        return new Promise(resolve => {
+            image.onload = resolve.bind(undefined, image);
+        });
+    })).then((images) => {
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
+
+        for (let i = 0; i < 6; i++) {
+            gl.texImage2D(
+                gl.TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                0,
+                gl.RGBA,
+                gl.RGBA,
+                gl.UNSIGNED_BYTE,
+                images[i]
+            );
+            gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
         }
-    };
-    image.src = url;
+
+        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+
+
+        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+
+    }, err => alert(`Failed to load sky box cube map, ${err}`));
+
+    return texture;
+}
+
+
+export function loadTexture(gl, url) {
+
+    const texture = gl.createTexture();
+
+    const replace = replaceTexture.bind(undefined, gl, texture);
+    // bound this because the compiler was having a hard time
+
+    replace(new Uint8Array([
+        255, 255, 0, 255,
+        0, 0, 0, 255,
+        0, 0, 0, 255,
+        255, 255, 0, 255,
+    ]), 2, 2);
+
+    if (url.endsWith(".tif")) {
+
+        fetch(url).then(async response => {
+            const encoded = await (await (response.blob())).arrayBuffer();
+
+            const ifds = UTIF.decode(encoded);
+            UTIF.decodeImage(encoded, ifds[0]);
+            const decoded = UTIF.toRGBA8(ifds[0]);
+
+            replace(decoded, ifds[0].width, ifds[0].height);
+        });
+
+    } else {
+
+        const image = new Image();
+        image.onload = () => {
+            replace(image);
+        };
+        image.src = url;
+    }
 
     return texture;
 }

@@ -1,7 +1,7 @@
 import {mat4, vec3} from "gl-matrix";
 
-const speed = 0.05; // m/frame
-const rotationSpeed = 0.01; // radians/pixel
+const speed = 0.025; // m/frame
+const rotationSpeed = 0.003; // radians/pixel
 
 export class CameraController {
 
@@ -37,17 +37,18 @@ export class CameraController {
 
     update() {
 
-        if (this.mouse.deltaX !== 0 || this.mouse.deltaY !== 0) {
+        if ((this.mouse.deltaX !== 0 || this.mouse.deltaY !== 0) && (document.pointerLockElement != null)) {
 
             this.renderer.camera.rotation[1] += this.mouse.deltaX * rotationSpeed;
 
             this.renderer.camera.rotation[0] += this.mouse.deltaY * rotationSpeed;
             this.renderer.camera.rotation[0] = Math.max(Math.min(this.renderer.camera.rotation[0], Math.PI / 2), -Math.PI / 2);
 
-            this.mouse.deltaX = 0;
-            this.mouse.deltaY = 0;
-
         }
+
+        this.mouse.deltaX = 0;
+        this.mouse.deltaY = 0;
+
         const directionMap = new Map([
             ["w", vec3.fromValues(0, 0, -1)],
             ["s", vec3.fromValues(0, 0, 1)],

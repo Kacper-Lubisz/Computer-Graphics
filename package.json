@@ -8,6 +8,7 @@
     "lodash": "^4.17.15",
     "path": "^0.12.7",
     "serve": "^11.3.0",
+    "utif": "^3.1.0",
     "webpack-dev-server": "^3.10.3"
   },
   "devDependencies": {

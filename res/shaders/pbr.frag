@@ -23,6 +23,11 @@ uniform bool uUseMetalnessMap;
 uniform float uMetalness;
 uniform sampler2D uMetalnessMap;
 
+//uniform vec3 uLightPositions[25];
+//uniform vec3 uLightColors[25];
+
+uniform samplerCube uSkyMap;
+
 vec3 fresnelSchlick(vec3 h, vec3 v, vec3 baseReflectivity) {
     float hDotV = dot(h, v);
     return baseReflectivity + (1.0 - baseReflectivity) * pow(1.0 - hDotV, 5.0);
@@ -47,6 +52,15 @@ void main() {
 
     vec3 normal = normalize(vNormal);//texture2D(uNormalMap, vTexCoord).rgb;
 
+    vec3 albedo;
+    if (uUseAlbedoMap){
+        albedo = texture2D(uAlbedoMap, vTexCoord).rgb;
+        albedo = pow(albedo, vec3(2.2));
+        // gamma correct, ideally this should be done during loading to save flops
+    } else {
+        albedo = uAlbedo;
+    }
+
     float roughness;
     if (uUseRoughnessMap){
         roughness = texture2D(uRoughnessMap, vTexCoord).x;
@@ -54,32 +68,32 @@ void main() {
         roughness = uRoughness;
     }
 
-    vec3 albedo;
-    if (uUseAlbedoMap){
-        albedo = texture2D(uAlbedoMap, vTexCoord).rbg;
-        albedo = pow(albedo, vec3(2.2));
-        // gamma correct, ideally this should be done during loading to save flops
+    vec3 metalness;
+    if (uUseMetalnessMap){
+        metalness = texture2D(uMetalnessMap, vTexCoord).rgb;
     } else {
-        albedo = uAlbedo;
+        metalness = uAlbedo;
     }
 
-    vec3 lightPositions[2];
-    lightPositions[0] = vec3(0.964312, 1.3, 0.0);
-    lightPositions[1] = vec3(0.0, 1.3, 0.0);
-    vec3 lightColors[2];
-    lightColors[0] = vec3(.8, .5, .5) * 2.0;
-    lightColors[1] = vec3(.8, .2, 0.2);
+    vec3 uLightPositions[25];
+    vec3 uLightColors[25];
+
+    uLightPositions[0] = vec3(0.964312, 1.3, 0.0);
+    uLightPositions[1] = vec3(0.0, 1.3, 0.0);
+
+    uLightColors[0] = vec3(.8, .5, .5) * 25.0;
+    uLightColors[1] = vec3(.8, .2, 0.2);
 
     vec3 v = normalize(uCameraPosition - vPosition.xyz);// vector to the camera, the view vector
 
-    vec3 baseReflec = mix(vec3(0.04), albedo, uMetalness);
+    vec3 baseReflec = mix(vec3(0.04), albedo, metalness);
 
     vec3 luminance = vec3(0.04) * albedo;// start as ambient light
 
     for (int i = 0; i < 1; i ++){ // for each light
 
-        vec3 lightPosition = lightPositions[i];
-        vec3 lightColor = lightColors[i];
+        vec3 lightPosition = uLightPositions[i];
+        vec3 lightColor = uLightColors[i];
 
         vec3 L = vPosition.xyz - lightPosition;// vector to the light
         vec3 l = normalize(L);// vector to the light
@@ -109,8 +123,8 @@ void main() {
 
     //final color
     gl_FragColor = vec4(color, 1.0);
-    gl_FragColor = vec4(texture2D(uAlbedoMap, vTexCoord).rbg, 1.0);
-
+    //    gl_FragColor = vec4(albedo, 1.0);
+//    gl_FragColor = vec4(textureCube(uSkyMap, vPosition.xyz).xyz, 1.0);
 
 }
 
