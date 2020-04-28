@@ -45,32 +45,11 @@ function replaceTexture(gl, texture, data, width, height,) {
 }
 
 
-export function loadCubeMap(gl, urls) {
+export async function loadCubeMap(gl, urls) {
 
     const texture = gl.createTexture();
 
-    for (let i = 0; i < 6; i++) {
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
-        gl.texImage2D(
-            gl.TEXTURE_CUBE_MAP_POSITIVE_X + i,
-            0,
-            gl.RGBA,
-            2,
-            2,
-            0,
-            gl.RGBA,
-            gl.UNSIGNED_BYTE,
-            new Uint8Array([
-                255, 255, 0, 255,
-                0, 0, 0, 255,
-                0, 0, 0, 255,
-                255, 255, 0, 255,
-            ])
-        );
-        gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-    }
-
-    Promise.all(Array(6).fill(0).map((_, i) => {
+    return Promise.all(Array(6).fill(0).map((_, i) => {
         const image = new Image();
         image.src = urls[i];
         return new Promise(resolve => {
@@ -88,19 +67,20 @@ export function loadCubeMap(gl, urls) {
                 gl.UNSIGNED_BYTE,
                 images[i]
             );
-            gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+
         }
 
-        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+        // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
 
+        gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 
         gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 
-    }, err => alert(`Failed to load sky box cube map, ${err}`));
+        return texture;
 
-    return texture;
+    }, err => alert(`Failed to load sky box cube map, ${err}`));
 }
 
 

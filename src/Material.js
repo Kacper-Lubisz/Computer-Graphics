@@ -22,22 +22,9 @@ export class Material {
         this.metalness = metalness;
         this.roughness = roughness;
 
-        this.albedoMapPath = albedoMapPath;
-        this.metalnessMapPath = metalnessMapPath;
-        this.roughnessMapPath = roughnessMapPath;
-
-
-        if (albedoMapPath) {
-            this.albedoMap = loadTexture(gl, path.resolve("res/textures/", albedoMapPath));
-        }
-        if (normalMapPath) {
-            this.normalMap = loadTexture(gl, path.resolve("res/textures/", normalMapPath));
-        }
-        if (metalnessMapPath) {
-            this.metalnessMap = loadTexture(gl, path.resolve("res/textures/", metalnessMapPath));
-        }
-        if (roughnessMapPath) {
-            this.roughnessMap = loadTexture(gl, path.resolve("res/textures/", roughnessMapPath));
-        }
+        this.albedoMap = albedoMapPath ? loadTexture(gl, path.resolve("res/textures/", albedoMapPath)) : null;
+        this.normalMap = normalMapPath ? loadTexture(gl, path.resolve("res/textures/", normalMapPath)) : null;
+        this.metalnessMap = metalnessMapPath ? loadTexture(gl, path.resolve("res/textures/", metalnessMapPath)) : null;
+        this.roughnessMap = roughnessMapPath ? loadTexture(gl, path.resolve("res/textures/", roughnessMapPath)) : null;
     }
 }

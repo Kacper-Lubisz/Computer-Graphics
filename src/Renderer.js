@@ -1,12 +1,12 @@
 import {mat4, vec3} from "gl-matrix";
 import {CameraController} from "./CameraController";
 import {loadShaderProgram} from "./ShaderProgram";
-import path from "path";
-import {Material} from "./Material";
-import {SceneObject} from "./SceneObject";
 import {Light} from "./Light";
-import {MeshObject} from "./MeshObject";
 import {fillBuffer, loadCubeMap} from "./glUtils";
+import {SceneObject} from "./SceneObject";
+import {Scene} from "./Scene";
+import {Material} from "./Material";
+import {MeshObject} from "./MeshObject";
 
 
 const zNear = 0.1;
@@ -14,7 +14,7 @@ const zFar = 100;
 const fieldOfView = 80 * Math.PI / 180;
 
 export class Renderer {
-    constructor(canvas, scene, onLoaded) {
+    constructor(canvas, onLoaded) {
 
         this.camera = {
             location: vec3.create(),
@@ -34,51 +34,17 @@ export class Renderer {
         );
         this.viewMatrix = mat4.create();
 
-        // const skyBoxPromise = loadOBJ(scene);
+        this.scene = new Scene(
+            this.gl,
+            new SceneObject("root", mat4.create(), []),
+            new Map()
+        );
 
-
-        new Promise(async (acc, rej) => {
-            try {
-                this.scene = await loadOBJ(this.gl, scene);
-
-                this.pbrShader = await loadShaderProgram(
-                    this.gl,
-                    "/res/shaders/pbr.vert",
-                    "/res/shaders/pbr.frag",
-                    ["aPosition", "aNormal", "aTexCoord",],
-                    [
-                        "uModelMatrix", "uViewMatrix", "uProjectionMatrix",
-                        "uNormalMap",
-                        "uCameraPosition",
-                        "uUseAlbedoMap", "uAlbedo", "uAlbedoMap",
-                        "uUseRoughnessMap", "uRoughness", "uRoughnessMap",
-                        "uUseMetalnessMap", "uMetalness", "uMetalnessMap",
-                        "uLightPositions", "uLightColors",
-                        "uSkyMap"
-                    ]
-                );
-
-                this.skyShader = await loadShaderProgram(
-                    this.gl,
-                    "/res/shaders/sky.vert",
-                    "/res/shaders/sky.frag",
-                    ["aPosition"],
-                    [
-                        "uProjectionMatrix", "uViewMatrix",
-                        "uSkyMap"
-                    ]
-                );
-                onLoaded();
-                this.paint();
-
-                acc();
-            } catch (e) {
-                rej(e);
-
-            }
-        }).catch((error) => {
-            alert(`Unrecoverable Error, failed to load scene. ${error}`);
-            console.error(error);
+        this.defaultMaterial = new Material(this.gl, {
+            name: "default",
+            albedo: [100, 100, 100],
+            metalness: 0.0,
+            roughness: 0.5,
         });
 
         this.skyBoxPositionsBuffer = fillBuffer(this.gl, new Float32Array([ // using gl.TRIANGLES
@@ -100,14 +66,55 @@ export class Renderer {
             5, 3, 1,
         ]), this.gl.ELEMENT_ARRAY_BUFFER);
 
-        this.skyBoxCubeMap = loadCubeMap(this.gl, [
-            "/res/textures/sky_map_px.png",
-            "/res/textures/sky_map_nx.png",
-            "/res/textures/sky_map_py.png",
-            "/res/textures/sky_map_ny.png",
-            "/res/textures/sky_map_pz.png",
-            "/res/textures/sky_map_nz.png",
-        ]);
+
+        new Promise(async acc => {
+            this.pbrShader = await loadShaderProgram(
+                this.gl,
+                "/res/shaders/pbr.vert",
+                "/res/shaders/pbr.frag",
+                ["aPosition", "aNormal", "aTexCoord",],
+                [
+                    "uModelMatrix", "uViewMatrix", "uProjectionMatrix",
+                    "uUseNormalMap", "uNormalMap",
+                    "uCameraPosition",
+                    "uUseAlbedoMap", "uAlbedo", "uAlbedoMap",
+                    "uUseRoughnessMap", "uRoughness", "uRoughnessMap",
+                    "uUseMetalnessMap", "uMetalness", "uMetalnessMap",
+                    "uLightPositions", "uLightColors",
+                    "uSkyMap"
+                ]
+            );
+
+            this.skyShader = await loadShaderProgram(
+                this.gl,
+                "/res/shaders/sky.vert",
+                "/res/shaders/sky.frag",
+                ["aPosition"],
+                [
+                    "uProjectionMatrix", "uViewMatrix",
+                    "uSkyMap"
+                ]
+            );
+            this.skyBoxCubeMap = await loadCubeMap(this.gl, [
+                "/res/textures/sky_map_px.png",
+                "/res/textures/sky_map_nx.png",
+                "/res/textures/sky_map_py.png",
+                "/res/textures/sky_map_ny.png",
+                "/res/textures/sky_map_pz.png",
+                "/res/textures/sky_map_nz.png",
+            ]);
+
+            onLoaded(this.scene);
+            this.paint();
+
+            acc();
+        }).catch((error) => {
+            alert(`Unrecoverable Error, failed to load scene. ${error}`);
+            console.error(error);
+        });
+
+        this.gl.getExtension('OES_standard_derivatives');
+        this.gl.getExtension('EXT_shader_texture_lod');
 
     }
 
@@ -148,12 +155,16 @@ export class Renderer {
         this.gl.uniform1i(this.pbrShader.uniformLocations["uMetalnessMap"], 4);
 
         this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.skyBoxCubeMap);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.skyBoxCubeMap);
 
         const unwrappedSceneGraph = this.scene.rootObject.unwrapChildren(); // pre order traversal
         const transformationMap = new Map();
 
         const lights = [];
+
+        for (let object of unwrappedSceneGraph) {
+            object.object.update();
+        }
 
         for (let object of unwrappedSceneGraph) {
 
@@ -165,21 +176,38 @@ export class Renderer {
                 transformationMap.set(object.object, matrix);
             }
 
-            if (object instanceof Light) {
-                lights.push(object);
+            if (object.object instanceof Light) {
+                lights.push(object.object);
             }
 
         }
 
         const lightColors = lights.map(light => light.color);
-        const lightPositions = lights.map(light => mat4.getTranslation(vec3.create(), light.modelMatrix));
+        const lightPositions = lights.map(light => mat4.getTranslation(vec3.create(), transformationMap.get(light)));
+
+        this.gl.uniform3fv(this.pbrShader.uniformLocations["uLightPositions"], Array(5).fill(0).map((_, i) => {
+            if (i < lightPositions.length) {
+                return Array.from(lightPositions[i]);
+            } else {
+                return [0, 0, 0];
+            }
+        }).flat());
+        this.gl.uniform3fv(this.pbrShader.uniformLocations["uLightColors"], Array(5).fill(0).map((_, i) => {
+                if (i < lightColors.length) {
+                    return lightColors[i];
+                } else {
+                    return [0, 0, 0];
+                }
+            }).flat()
+        );
 
         for (let object of unwrappedSceneGraph) {
 
-            let mesh = object.object;
-            if (mesh instanceof MeshObject) {
+            if (object.object instanceof MeshObject) {
 
-                this.gl.uniformMatrix4fv(this.pbrShader.uniformLocations["uModelMatrix"], false, transformationMap.get(mesh));
+                const mesh = object.object.mesh;
+
+                this.gl.uniformMatrix4fv(this.pbrShader.uniformLocations["uModelMatrix"], false, transformationMap.get(object.object));
 
                 this.gl.bindBuffer(this.gl.ARRAY_BUFFER, mesh.positionBuffer);
                 this.gl.vertexAttribPointer(this.pbrShader.attributeLocations["aPosition"], 3, this.gl.FLOAT, false, 0, 0);
@@ -196,22 +224,18 @@ export class Renderer {
                 for (let materialName of mesh.materials.keys()) {
 
                     const faces = mesh.materials.get(materialName);
-                    const material = this.scene.materials[materialName];
-
-                    // console.log(material.albedoMap);
-
-                    // uUseMetalnessMap
-                    // uMetalness
-                    // uMetalnessMap
+                    const material = this.scene.materials.get(materialName) ?? this.defaultMaterial;
 
                     this.gl.uniform3fv(this.pbrShader.uniformLocations["uAlbedo"], material.albedo ? material.albedo : [1, 1, 1]);
                     this.gl.uniform1i(this.pbrShader.uniformLocations["uUseAlbedoMap"], material.albedoMap ? 1 : 0);
 
-                    this.gl.uniform1f(this.pbrShader.uniformLocations["roughness"], material.roughness ? material.roughness : 0.8);
-                    this.gl.uniform1i(this.pbrShader.uniformLocations["useRoughnessMap"], material.roughnessMap ? 1 : 0);
+                    this.gl.uniform1i(this.pbrShader.uniformLocations["uUseNormalMap"], material.normalMap ? 1 : 0);
+
+                    this.gl.uniform1f(this.pbrShader.uniformLocations["uRoughness"], material.roughness ? material.roughness : 0.8);
+                    this.gl.uniform1i(this.pbrShader.uniformLocations["uUseRoughnessMap"], material.roughnessMap ? 1 : 0);
 
                     this.gl.uniform1f(this.pbrShader.uniformLocations["uMetalness"], material.metalness ? material.metalness : 0);
-                    this.gl.uniform1i(this.pbrShader.uniformLocations["uUseMetalnessMap"], material.albedoMap ? 1 : 0);
+                    this.gl.uniform1i(this.pbrShader.uniformLocations["uUseMetalnessMap"], material.metalnessMap ? 1 : 0);
 
                     this.gl.activeTexture(this.gl.TEXTURE1);
                     this.gl.bindTexture(this.gl.TEXTURE_2D, material.albedoMap ?? null);
@@ -264,201 +288,7 @@ export class Renderer {
 
         this.gl.depthFunc(this.gl.LESS);
 
-
         window.requestAnimationFrame(this.paint.bind(this));
 
     }
-}
-
-
-async function loadOBJ(gl, file) {
-
-    const objectData = await fetch(file).then(res => res.text(), err => {
-        alert(`Failed to load the scene .obj file ${err}`);
-    });
-
-    const objectLines = objectData.split("\n");
-
-    let materialPromise = undefined;
-    const objects = [];
-
-    let currentObject = null;
-    let selectedMaterial = null;
-
-    let positionIndex = 1;
-    let normalIndex = 1;
-    let texCoordsIndex = 1;
-
-    for (let i = 0; i < objectLines.length; i++) {
-        const withComment = objectLines[i];
-        const line = withComment.split("#")[0];
-
-        if (line.startsWith("o ") || i === objectLines.length - 1) {
-
-            if (currentObject !== null) {
-                objects.push(new MeshObject(
-                    gl,
-                    currentObject.name,
-                    mat4.create(),
-                    [],
-                    currentObject
-                ));
-            }
-
-            currentObject = {
-                name: line.substr(2),
-
-                positions: [],
-                normals: [],
-                texCoords: [],
-
-                startPositions: positionIndex,
-                startNormals: normalIndex,
-                startTexCoords: texCoordsIndex,
-
-                vertexCombinations: 0,
-
-                vertexToIndex: new Map(),
-                indexToVertex: new Map(),
-                materials: new Map()
-            };
-
-        } else if (line.startsWith("v ")) {
-
-            currentObject.positions.push(line.substr(2).split(" ").map(num => Number(num)));
-            positionIndex++;
-
-        } else if (line.startsWith("vt ")) {
-
-            const [x, y] = line.substr(3).split(" ").map(num => Number(num));
-            currentObject.texCoords.push([x, 1 - y]);
-            texCoordsIndex++;
-
-        } else if (line.startsWith("vn ")) {
-
-            currentObject.normals.push(line.substr(3).split(" ").map(num => Number(num)));
-            normalIndex++;
-
-        } else if (line.startsWith("f ")) {
-
-            let vertices = line.substr(2).split(" ");
-
-            const vertexIndices = vertices.map(vertex => {
-
-                if (currentObject.vertexToIndex.has(vertex)) {
-                    return currentObject.vertexToIndex.get(vertex);
-                } else {
-                    currentObject.vertexToIndex.set(vertex, currentObject.vertexCombinations);
-                    currentObject.indexToVertex.set(currentObject.vertexCombinations, vertex.split("/").map(ent => Number(ent)));
-                    return currentObject.vertexCombinations++;
-                }
-            });
-
-            if (currentObject.materials.has(selectedMaterial)) {
-                currentObject.materials.get(selectedMaterial).facesByIndex.push(vertexIndices);
-            } else {
-                currentObject.materials.set(selectedMaterial, {
-                    facesByIndex: [vertexIndices],
-                });
-            }
-        } else if (line.startsWith("mtllib")) {
-            const fileName = line.substr(7);
-
-            materialPromise = fetch(path.resolve("res/models/", fileName)).then(res => res.text(), err => {
-                alert(`Failed to materials, failed to load .mtl file, ${err}`);
-            });
-
-        } else if (line.startsWith("usemtl")) {
-            selectedMaterial = line.substr(7);
-
-        } else if (line.startsWith("p ")) { // parent
-            currentObject.parent = line.substr(2);
-
-        } else if (line.startsWith("mm ")) { // model matrix
-            currentObject.modelMatrix = line.substr(3).split(" ").map(elem => Number(elem));
-
-        }
-
-    }
-
-    const rootObject = new SceneObject("root", mat4.create(), objects);
-
-    const materialData = await materialPromise;
-    const materials = loadMTL(gl, materialData);
-
-    return new Scene(rootObject, materials);
-}
-
-class Scene {
-    constructor(rootObject, materials) {
-        this.rootObject = rootObject;
-        this.materials = materials;
-    }
-}
-
-function loadMTL(gl, source) {
-
-    const materials = {};
-    let currentMaterial = null;
-
-    const materialLines = source.split("\n");
-    for (let i = 0; i < materialLines.length; i++) {
-        const withComment = materialLines[i];
-        const line = withComment.split("#")[0];
-
-        if (line.startsWith("newmtl ") || i === materialLines.length - 1) {
-
-            if (currentMaterial !== null) {
-                materials[currentMaterial.name] = new Material(
-                    gl,
-                    currentMaterial
-                );
-            }
-
-            let materialName = line.substr(7);
-            currentMaterial = {
-                name: materialName,
-                albedo: null,
-                metalness: null,
-                roughness: null,
-                albedoMapPath: null,
-                normalMapPath: null,
-                metalnessMapPath: null,
-                roughnessMapPath: null
-            };
-
-        } else if (line.startsWith("Kd")) {
-            currentMaterial.albedo = line.substr(3).split(" ").map(elem => Number(elem));
-
-        } else if (line.startsWith("map_Kd ")) {
-
-            let elements = line.substr(7).split(" ");
-            currentMaterial.albedoMapPath = elements[elements.length - 1];
-
-        } else if (line.startsWith("map_Bump ")) {
-
-            let elements = line.substr(9).split(" ");
-            currentMaterial.normalMapPath = elements[elements.length - 1];
-
-
-        } else if (line.startsWith("Ns ")) {
-            currentMaterial.roughness = line.substr(3);
-
-        } else if (line.startsWith("map_Ns ")) {
-
-            let elements = line.substr(7).split(" ");
-            currentMaterial.roughnessMapPath = elements[elements.length - 1];
-
-
-        } else if (line.startsWith("Pm ")) {
-            currentMaterial.metalness = Number(line.substr(3));
-
-        } else if (line.startsWith("map_Pm ")) {
-            currentMaterial.metalnessMapPath = Number(line.substr(7));
-
-        }
-    }
-
-    return materials;
-
 }

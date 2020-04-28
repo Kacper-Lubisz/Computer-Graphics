@@ -1,5 +1,7 @@
 import {SceneObject} from "./SceneObject";
+import {mat4} from "gl-matrix";
 import {fillBuffer} from "./glUtils";
+
 
 export class MeshObject extends SceneObject {
     /**
@@ -8,34 +10,40 @@ export class MeshObject extends SceneObject {
      * @param name {string}
      * @param modelMatrix {mat4}
      * @param children {SceneObject[]}
-     * @param positions
-     * @param normals
-     * @param texCoords
-     * @param startPositions
-     * @param startNormals
-     * @param startTexCoords
-     * @param vertexCombinations
-     * @param indexToVertex
-     * @param materials
+     * @param mesh {Mesh} The mesh for this object
      */
     constructor(
         gl,
         name,
         modelMatrix,
         children,
-        {
-            positions,
-            normals,
-            texCoords,
-            startPositions,
-            startNormals,
-            startTexCoords,
-            vertexCombinations,
-            indexToVertex,
-            materials
-        }
+        mesh,
     ) {
         super(name, modelMatrix, children);
+        this.gl = gl;
+        this.mesh = mesh;
+    }
+
+    clone() {
+        return new MeshObject(this.gl, `${name} clone`, mat4.clone(this.modelMatrix), this.cloneChildren(), this.mesh);
+    }
+
+}
+
+export class Mesh {
+
+    constructor(
+        gl,
+        positions,
+        normals,
+        texCoords,
+        startPositions,
+        startNormals,
+        startTexCoords,
+        vertexCombinations,
+        indexToVertex,
+        materials
+    ) {
         this.gl = gl;
 
         this.positionArray = [];
@@ -57,7 +65,7 @@ export class MeshObject extends SceneObject {
         for (let material of materials.keys()) {
             const faces = materials.get(material);
 
-            faces.indexArray = faces.facesByIndex.flat();
+            faces.indexArray = faces.faceVertexIndices.flat();
             faces.indexBuffer = fillBuffer(gl, new Uint16Array(faces.indexArray), gl.ELEMENT_ARRAY_BUFFER);
 
         }
@@ -65,5 +73,4 @@ export class MeshObject extends SceneObject {
         this.materials = materials;
 
     }
-
 }

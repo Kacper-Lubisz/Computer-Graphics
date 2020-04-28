@@ -24,4 +24,39 @@ export class SceneObject {
         }].concat(this.children.map(child => child.unwrapChildren(this)).flat());
     }
 
+    update() {
+
+    }
+
+    cloneChildren() {
+        return this.children.map(child => child.clone());
+    }
+
+    clone() {
+
+    }
+
+    getChildByName(name) {
+        const child = this.children.find(child => child.name === name);
+
+        if (child) {
+            return child;
+        } else {
+            return this.children.find(child => child.getChildByName(name) !== undefined);
+        }
+    }
+
+    removeChildByName(name) {
+
+        const child = this.children.find(child => child.name === name);
+
+        if (child) {
+            this.children = this.children.filter(c => c !== child);
+            return child;
+        } else {
+            return this.children.find(child => child.removeChildByName(name) !== undefined);
+        }
+
+    }
+
 }

@@ -1,3 +1,6 @@
+#extension GL_EXT_shader_texture_lod:enable
+#extension GL_OES_standard_derivatives:enable
+
 precision mediump float;
 
 #define PI 3.1415926538
@@ -7,6 +10,7 @@ varying vec2 vTexCoord;
 varying vec3 vNormal;
 varying vec4 vPosition;
 
+uniform bool uUseNormalMap;
 uniform sampler2D uNormalMap;
 
 uniform vec3 uCameraPosition;
@@ -23,8 +27,8 @@ uniform bool uUseMetalnessMap;
 uniform float uMetalness;
 uniform sampler2D uMetalnessMap;
 
-//uniform vec3 uLightPositions[25];
-//uniform vec3 uLightColors[25];
+uniform vec3 uLightPositions[5];
+uniform vec3 uLightColors[5];
 
 uniform samplerCube uSkyMap;
 
@@ -50,7 +54,27 @@ float geometrySmith(vec3 n, vec3 v, vec3 l, float roughness){
 
 void main() {
 
-    vec3 normal = normalize(vNormal);//texture2D(uNormalMap, vTexCoord).rgb;
+    vec3 normal;
+
+    if (uUseNormalMap){
+
+        vec3 Q1 = dFdx(vPosition).xyz;
+        vec3 Q2 = dFdy(vPosition).xyz;
+        vec2 st1 = dFdx(vTexCoord);
+        vec2 st2 = dFdy(vTexCoord);
+
+        st2.y = -st2.y;
+
+        vec3 T = normalize(Q1 * st2.t - Q2 * st1.t);
+        vec3 B = normalize(-Q1 * st2.s + Q2 * st1.s);
+
+        mat3 TBN = mat3(T, B, vNormal);
+
+        normal = texture2D(uNormalMap, vTexCoord).rgb * 2.0 - 1.0;
+        normal = normalize(TBN * normal);
+    } else {
+        normal = vNormal;
+    }
 
     vec3 albedo;
     if (uUseAlbedoMap){
@@ -68,29 +92,29 @@ void main() {
         roughness = uRoughness;
     }
 
-    vec3 metalness;
+    float metalness;
     if (uUseMetalnessMap){
-        metalness = texture2D(uMetalnessMap, vTexCoord).rgb;
+        metalness = texture2D(uMetalnessMap, vTexCoord).g;
     } else {
-        metalness = uAlbedo;
+        metalness = uMetalness;
     }
 
-    vec3 uLightPositions[25];
-    vec3 uLightColors[25];
+    //    vec3 uLightPositions[25];
+    //    vec3 uLightColors[25];
 
-    uLightPositions[0] = vec3(0.964312, 1.3, 0.0);
-    uLightPositions[1] = vec3(0.0, 1.3, 0.0);
+    //    uLightPositions[0] = vec3(0.964312, 1.3, 0.0);
+    //    uLightPositions[1] = vec3(0.0, 1.3, 0.0);
 
-    uLightColors[0] = vec3(.8, .5, .5) * 25.0;
-    uLightColors[1] = vec3(.8, .2, 0.2);
+    //    uLightColors[0] = vec3(.8, .5, .5) * 25.0;
+    //    uLightColors[1] = vec3(.8, .2, 0.2);
 
     vec3 v = normalize(uCameraPosition - vPosition.xyz);// vector to the camera, the view vector
 
     vec3 baseReflec = mix(vec3(0.04), albedo, metalness);
 
-    vec3 luminance = vec3(0.04) * albedo;// start as ambient light
+    vec3 luminance = vec3(0.01) * albedo;// start as ambient light
 
-    for (int i = 0; i < 1; i ++){ // for each light
+    for (int i = 0; i < 5; i ++){ // for each light
 
         vec3 lightPosition = uLightPositions[i];
         vec3 lightColor = uLightColors[i];
@@ -123,8 +147,8 @@ void main() {
 
     //final color
     gl_FragColor = vec4(color, 1.0);
-    //    gl_FragColor = vec4(albedo, 1.0);
-//    gl_FragColor = vec4(textureCube(uSkyMap, vPosition.xyz).xyz, 1.0);
+//    gl_FragColor = vec4(vTexCoord, 0.0, 1.0);
+
 
 }
 

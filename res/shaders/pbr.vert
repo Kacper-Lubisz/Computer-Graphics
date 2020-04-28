@@ -12,7 +12,7 @@ varying vec4 vPosition;
 
 void main() {
     vTexCoord = aTexCoord;
-    vNormal = aNormal;
+    vNormal = mat3(uModelMatrix) * aNormal;
 
     vPosition = uModelMatrix * aPosition;
     gl_Position = uProjectionMatrix * uViewMatrix * vPosition;
