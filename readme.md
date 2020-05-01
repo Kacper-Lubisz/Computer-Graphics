@@ -1,20 +1,26 @@
 # Graphics Coursework
 
-This project is my L2 graphics coursework. The models created in blender and can be seen in `livingroom.blend`. 
-It's built using webpack for js bundling. To see the dependency list see `package.json`.
+This project is a website with a 3D graphics demonstration. This project uses the following: Blender for modeling,
+WebGL as the rendering interface and webpack for js module bundling. The models (.blend) can be found in 
+`res/models/livingroom.blend`. The textures (found in `/res/textures`) and licences come from https://www.textures.com/. 
+
+# Highlighted Animations
+- Clock
+- Fireplace
+- Ceiling Fan
+- Outdoors grass
+- Blinds
 
 # Usage guide
 
-Key binds:
- + `w` - move the camera forward
- + `s` - move the camera back
- + `a` - move the camera left
- + `d` - move the camera right
- + `space` - move the camera up
- + `ctrl` - move the camera down 
- 
-Other:
-+ `mouse move` - rotate the camera
+Binds:
+ + `W` - move the camera forward
+ + `A` - move the camera left
+ + `S` - move the camera back 
+ + `D` - move the camera right
+ + `Space` - move the camera up
+ + `Ctrl` - move the camera down
++ `Mouse Move` - rotate the camera
 
 # Running Instructions
 
@@ -28,4 +34,3 @@ Then run:
 $ npm install
 $ npm start
 ```
-
